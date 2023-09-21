@@ -7,7 +7,35 @@ interface BoardRouteContext {
     id: string;
   };
 }
-export async function PUT(req: Request, { params }: BoardRouteContext) {
+
+export async function GET(req: Request, { params }: BoardRouteContext) {
+  const { id } = params;
+
+  const board = await prisma.boards.findUnique({
+    where: {
+      id,
+    },
+
+    include: {
+      columns: {
+        orderBy: {
+          order: "asc",
+        },
+        include: {
+          cards: true,
+        },
+      },
+    },
+  });
+  if (!board) {
+    return NextResponse.json([
+      { code: "not_found", message: "Board not found" },
+    ]);
+  }
+  return NextResponse.json(board);
+}
+
+export async function PATCH(req: Request, { params }: BoardRouteContext) {
   const { id } = params;
   const bodyRaw = await req.json();
   const validateBody = updateBoardDto.safeParse(bodyRaw);

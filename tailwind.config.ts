@@ -9,7 +9,11 @@ const config: Config = {
   ],
   darkMode: "class",
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        content: "calc(100% - 11rem)",
+      },
+    },
   },
   plugins: [require("flowbite/plugin")],
 };

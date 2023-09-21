@@ -13,7 +13,11 @@ export default function UserDropDown() {
   const toggleDropdown = () => {
     setIsDropDownOpened(!isDropDownOpened);
   };
-  const dropdownRef = useClickAway<HTMLDivElement>(() => {
+  const dropdownRef = useClickAway<HTMLDivElement>((e) => {
+    const element = e.target as HTMLElement;
+    if (element.closest("#user-menu-button")) {
+      return;
+    }
     setIsDropDownOpened(false);
   });
 
